@@ -74,7 +74,7 @@ int LocateElem(SqList *L, ElemType e)
 				i++;
 		if(i>=L->length)
 				return 0;
-		else
+		else 
 				return i+1;
 }
 
@@ -94,7 +94,7 @@ int ListInsert(SqList *L,int i,ElemType e)
 //删除数据元素
 int ListDelete(SqList *L,int i,ElemType *e)
 {
-
+		
 		int j;
 		if(i<1||i>L->length)
 				return 0;
@@ -103,7 +103,7 @@ int ListDelete(SqList *L,int i,ElemType *e)
 		for(j=i;j<L->length;j++)
 				L->data[j]=L->data[j+1];
 		L->length--;
-
+		
 		return 0;
 }
 
@@ -121,14 +121,21 @@ int main()
 	InitList(sqList);
 	CreateList(sqList,a,3);
 //	printf("%d , %d\n",sqList->data[0],sqList->data[1]);
-	DispList(sqList);
+	DispList(sqList);	
 	ElemType *de;
 	de=(ElemType *)malloc(sizeof(ElemType));
 	ListDelete(sqList,1,de);
 	DispList(sqList);
 	//printf("%d",sqList->data[15]);
-
-
 	DestroyList(sqList);
-	return 0;
+	ElemType ie;
+	ie=100;	
+	ListInsert(sqList,sqList->length+1,ie);
+	DispList(sqList);
+	printf("%d\n",ListLength(sqList));
+	printf("%d\n",LocateElem(sqList,ie));
+	ElemType oe;
+	GetElem(sqList,2,&oe);
+	printf("%d\n",oe);
+	return 0;		
 }
