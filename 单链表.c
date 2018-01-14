@@ -218,4 +218,4 @@ int main(void)
 		sort(linkList);
 		DisList(linkList);
 		return 0;
-}
+
