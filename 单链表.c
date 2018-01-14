@@ -173,11 +173,27 @@ void split(LinkList *L,LinkList *L2)
 	}
 	r1->next=NULL;
 }
-
+//排序
+void sort(LinkList *L)
+{
+		LinkList *p,*pre,*q;
+		p=L->next->next;
+		L->next->next=NULL;
+		while(p!=NULL)
+		{
+				q=p->next;
+				pre=L;
+				while(pre->next!=NULL&&pre->next->data<p->data)
+					pre=pre->next;
+				p->next=pre->next;
+				pre->next=p;
+				p=q;
+		}
+}
 int main(void)
 {
 		LinkList *linkList;
-		ElemType a[10]={10,11,23,44,55,66,77,8,99,1000};
+		ElemType a[10]={10000,111,23,44,55,66,77,8,99,1000};
 		linkList=CreateListR(a,10);
 		DisList(linkList);
 		printf("是否为空表%d\n",ListEmpty(linkList));
@@ -199,5 +215,7 @@ int main(void)
 		split(linkList,linkList2);
 		DisList(linkList);
 		DisList(linkList2);
+		sort(linkList);
+		DisList(linkList);
 		return 0;
 }
