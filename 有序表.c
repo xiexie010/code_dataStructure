@@ -11,18 +11,20 @@ typedef struct LNode
 LinkList* CreateListR(ElemType a[],int n)
 {
 		LinkList *L;
-		LinkList *s,*r;
+		LinkList *pre,*p;
 		int i;
 		L=(LinkList *)malloc(sizeof(LinkList));
-		r=L;
+		L->next=NULL;
 		for(i=0;i<n;i++)
 		{
-				s=(LinkList *)malloc(sizeof(LinkList));
-				s->data=a[i];
-				r->next=s;
-				r=s;
-		}
-		r->next=NULL;
+				pre=L;
+				while(pre->next!=NULL&&pre->next->data<a[i])
+						pre=pre->next;
+				p=(LinkList *)malloc(sizeof(LinkList));
+				p->data=a[i];
+				p->next=pre->next;
+				pre->next=p;
+		}		
 		return L;
 }
 void DisList(LinkList *L)
@@ -43,7 +45,6 @@ LinkList* InitList(void)
 		return L;
 }
 //销毁线性表
-		r->next=NULL;
 void DestoryList(LinkList *L)
 {
 		LinkList *pre=L,*p=pre->next;
@@ -109,28 +110,16 @@ int LocateElem(LinkList *L,ElemType e)
 	else 
 			return i;
 }
-//在第n位置插入数据元素
-int ListInsert(LinkList *L,int n,ElemType e)
+//在插入数据元素
+void ListInsert(LinkList *L,ElemType e)
 {
-		int j=0;
-		LinkList *p=L,*s;
-		while(j<n-1&&p!=NULL)
-		{
-				j++;
-				p=p->next;
-		}
-		if(p==NULL)
-		{
-				return -1;
-		}
-		else
-		{
-				s=(LinkList *)malloc(sizeof(LinkList));
-				s->data=e;
-				s->next=p->next;
-				p->next=s;
-				return 1;
-		}
+		LinkList *pre=L,*p;
+		while(pre->next!=NULL&&pre->next->data<e)
+			pre=pre->next;
+		p=(LinkList *)malloc(sizeof(LinkList));
+		p->data=e;
+		p->next=pre->next;
+		pre->next=p;
 }
 
 //删除数据元素n
@@ -174,6 +163,51 @@ void split(LinkList *L,LinkList *L2)
 	}
 	r1->next=NULL;
 }
+//合并两张表
+LinkList* UnionList(LinkList *La,LinkList *Lb)
+{
+		LinkList *pa=La->next,*pb=Lb->next,*r,*s;
+		LinkList *Lc=(LinkList *)malloc(sizeof(LinkList));
+		r=Lc;
+		while(pa!=NULL&&pb!=NULL)
+		{
+				if(pa->data<pb->data)
+				{
+						s=(LinkList *)malloc(sizeof(LinkList));
+						s->data=pa->data;
+						r->next=s;
+						r=s;
+						pa=pa->next;
+				}
+				else
+				{
+						s=(LinkList *)malloc(sizeof(LinkList));
+						s->data=pb->data;
+						r->next=s;
+						r=s;
+						pb=pb->next;
+				}
+		}
+		while(pa!=NULL)
+		{
+				s=(LinkList *)malloc(sizeof(LinkList));
+				s->data=pa->data;
+				r->next=s;
+				r=s;
+				pa=pa->next;
+		}
+		while(pb!=NULL)
+		{
+				s=(LinkList *)malloc(sizeof(LinkList));
+				s->data=pb->data;
+				r->next=s;
+				r=s;
+				pb=pb->next;
+		}
+		r->next=NULL;
+		return Lc;
+}
+
 //排序
 void sort(LinkList *L)
 {
@@ -205,7 +239,7 @@ int main(void)
 
 		printf("23在第%d位\n",LocateElem(linkList,23));
 
-		ListInsert(linkList,3,100);
+		ListInsert(linkList,100);
 		DisList(linkList);
 		ListDelete(linkList,4,&e);
 		DisList(linkList);
@@ -216,8 +250,13 @@ int main(void)
 		split(linkList,linkList2);
 		DisList(linkList);
 		DisList(linkList2);
-		sort(linkList);
-		DisList(linkList);
+		//sort(linkList);
+		//DisList(linkList);
+		LinkList *linkList3;
+		sort(linkList2);
+		linkList3=UnionList(linkList,linkList2);
+		printf("合并之后的表为：\n");
+		DisList(linkList3);
 		return 0;
 }
 
