@@ -81,32 +81,24 @@ int ListInsert(DLinkList *L,int i,ElemType e)
 				return 1;
 		}
 }
-int ListDelete(DLinkList *L,int i,ElemType *e)
+//对双链表进行排序
+void sort(DLinkList *L)
 {
-		int j=0;
-		DLinkList *p=L,*q;
-		while(j<i-1&&p!=NULL)
-		{
-				j++;
-				p=p->next;
-		}
-		if(p==NULL)
-				return -1;
-		else
+		DLinkList *p,*pre,*q;
+		p=L->next->next;
+		L->next->next=NULL;
+		while(p!=NULL)
 		{
 				q=p->next;
-				if(q==NULL)
-				{
-						return -1;
-				}
-				*e=q->data;
-				p->next=q->next;
-				if(q->next!=NULL)
-				{
-						p->next->prior=p;
-				}
-				free(q);
-				return 1;
+				pre=L;
+				while(pre->next!=NULL&&pre->next->data<p->data)
+					pre=pre->next;
+				p->next=pre->next;
+				if(pre->next!=NULL)
+						pre->next->prior=p;
+				pre->next=p;
+				p->prior=pre;
+				p=q;
 		}
 }
 
@@ -115,16 +107,14 @@ int main(void)
 		ElemType a[6]={10,20,30,40,50,66};
 		DLinkList *dLinkList1=CreateListF(a,6);
 		DisList(dLinkList1);
+		printf("\n");
 		ElemType a2[6]={22,33,44,55,66,77};
 		DLinkList *dLinkList2=CreateListR(a2,6);
-		DisList(dLinkList2);
+		DisList(dLinkList2);	
 			
-		ListInsert(dLinkList2,2,100);
+		ListInsert(dLinkList2,2,200);
 		DisList(dLinkList2);
-		ElemType e;
-		ListDelete(dLinkList2,2,&e);
+		sort(dLinkList2);
 		DisList(dLinkList2);
-		printf("删除的数是：%d\n",e);
-
 		return 0;
 }
