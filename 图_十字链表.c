@@ -86,7 +86,7 @@ void DispGraph(GraphyAdjList *g)
 		printf("DispGraph start . \n");
 		while(g->adjList[i].firstedge!=NULL&&i<MaxVex)
 		{
-				printf("顶点：%c -> ",g->adjList[i].data);
+				printf("顶点：%c ->",g->adjList[i].data);
 				EdgeNode *e=NULL;
 				e=g->adjList[i].firstedge;
 				while(e!=NULL)
@@ -98,11 +98,62 @@ void DispGraph(GraphyAdjList *g)
 				printf("\n");
 		}
 }
+int visitied[MaxVex];
+//深度优先遍历
+void DFS(GraphyAdjList *g,int v)
+{
+		EdgeNode *p;
+		visitied[v]=1;
+		printf("%d ",v);
+		p=g->adjList[v].firstedge;
+		while(p!=NULL)
+		{
+				if(visitied[p->adjvex]==0)
+						DFS(g,p->adjvex);
+				p=p->next;
+		}
+}
+//广度优先遍历
+void BFS(GraphyAdjList *g,int v)
+{
+		EdgeNode *p;
+		int queue[MaxVex],front=0,rear=0;
+		int visitedb[MaxVex];
+		int w,i;
+		for(i=0;i<g->vnum;i++)
+				visitedb[i]=0;
+		printf(" %2d",v);
+		visitedb[v]=1;
+		rear=(rear+1)%MaxVex;
+		queue[rear]=v;
+		while(front!=rear)
+		{
+				front=(front+1)%MaxVex;
+				w=queue[front];
+				p=g->adjList[w].firstedge;
+				while(p!=NULL)
+				{
+						if(visitedb[p->adjvex]==0)
+						{
+								printf(" %2d",p->adjvex);
+								visitedb[p->adjvex]=1;
+								rear=(rear+1)%MaxVex;
+								queue[rear]=p->adjvex;
+						}
+						p=p->next;
+				}
+		}
+		printf("\n");
+}
+
+
 int main(void)
 {
 		GraphyAdjList g;
 		CreateGraphy(&g);
 		DispGraph(&g);
+		DFS(&g,0);
+		BFS(&g,0);
 		return 0;
 }
 

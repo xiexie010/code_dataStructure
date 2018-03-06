@@ -13,7 +13,7 @@ One* Two(void)
 }
 
 void testtest(One* on)
-{
+e
 	on=(One *)malloc(sizeof(One));
 	on->i=11;	
 	printf("xiexie");
