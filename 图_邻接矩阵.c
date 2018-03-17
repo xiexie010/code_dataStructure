@@ -4,7 +4,6 @@
 #define MAXVEX 6
 #define INF 100
 #define MAXSIZE 20
-
 typedef int InfoType;
 typedef struct
 {
@@ -106,7 +105,9 @@ void Prim(MGraph g,int v)
 							closest[j]=k;
 					}
 		}
+
 }
+
 
 int main(void)
 {
